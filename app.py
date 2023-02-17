@@ -1,24 +1,33 @@
 import PySimpleGUI as sg
 
-#create a new layout
+
 def create_new_task():
-    sg.theme('DarkBlue4') #theme's name
+    sg.theme('LightGrey3')  # theme's name
     line = [
-        [sg.Checkbox(''), sg.Input('')] #a checkbox and a input box in the same line
+        [sg.Checkbox(''), sg.Input('')]  # a checkbox and a data
+        # input fild in the same line
     ]
-    layout = [
-        [sg.Frame('Tarefas', layout=line, key='container')],
-        [sg.Button('Nova Tarefa'), sg.Button('Limpar')]
+    layout = [  # create a new layout
+        [sg.Frame('Tasks', layout=line, key='container')],
+        [sg.Button('New Task'), sg.Button('Reset')]
     ]
 
-    return sg.Window('Todo List', layout=layout, finalize=True)
+    return sg.Window('Task Manager', layout=layout, finalize=True)  # window's title and the app's layout
+
 
 # create the window
 window = create_new_task()
 
-#create the window's rules
-
+# create the window's rules
 while True:
+    """ this repetition structure will read the information from that window and
+     will store the events (every click made inside the screen) inside this "event" variable
+     and the values (everything that is filled in some field) inside the variable "values" """
     event, values = window.read()
-    if event == sg.WIN_CLOSED:
+    if event == sg.WIN_CLOSED: 
         break
+    elif event == 'New Task':
+        window.extend_layout(window['container'], [[sg.Checkbox(''), sg.Input('')]])
+    elif event == 'Reset':
+        window.close()
+        window = create_new_task()
